@@ -280,8 +280,7 @@ class ServiceProvider extends PragmaRXServiceProvider
                 $app['tracker.config'],
                 new Session(
                     $sessionModel,
-                    $app['tracker.config'],
-                    new PhpSession()
+                    $app['tracker.config']
                 ),
                 $logRepository,
                 new Path($pathModel),
