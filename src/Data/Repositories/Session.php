@@ -69,6 +69,10 @@ class Session extends Repository
     {
         $data = $this->getSessionData();
 
+        if(!isset($data['status']) || $data['status'] == 0){
+            return false;
+        }
+
         if (isset($data['user_id']) && isset($data['user_type'])) {
             if ($data['user_id'] !== $this->sessionInfo['user_id'] && $data['user_type'] !== $this->sessionInfo['user_type']) {
                 return false;
@@ -136,7 +140,7 @@ class Session extends Repository
             if (in_array($key, ['user_agent', 'impersonation_id'])) {
                 continue;
             }
-            if ($sessionData[$key] !== $value) {
+            if (!isset($sessionData[$key]) || $sessionData[$key] !== $value) {
                 if (!isset($model)) {
                     $model = $this->find($this->sessionInfo['id']);
                 }

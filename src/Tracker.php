@@ -255,6 +255,7 @@ class Tracker
             // it's internally used to check if the user agent changed
             // during a session.
             'user_agent'       => $this->dataRepositoryManager->getCurrentUserAgent(),
+            'status'       => 1,
         ];
 
         $authSessionPrefix = $this->config->get('auth_session_prefix');
