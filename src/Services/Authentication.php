@@ -33,16 +33,17 @@ class Authentication
             $guards[] = null;
         }
 
-        foreach ($this->getAuthentication() as $auth) {
+        foreach ($this->getAuthentication() as $authIoc) {
             foreach ($guards as $guard) {
                 // Call guard() if not null
                 if ($guard && $guard != 'null') {
-                    $auth = $auth->guard($guard);
+                    $auth = $authIoc->guard($guard);
                 }
-            }
-            if (is_callable([$auth, $method], true, $callable_name)) {
-                if ($data = $auth->$method()) {
-                    return $data;
+
+                if (is_callable([$auth, $method], true, $callable_name)) {
+                    if ($data = $auth->$method()) {
+                        return $data;
+                    }
                 }
             }
         }
