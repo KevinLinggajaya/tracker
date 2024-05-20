@@ -175,6 +175,12 @@ class Session extends Repository
         $this->putSessionData($this->sessionInfo);
     }
 
+    public function updateSessionOnCacheByUuid($uuid, $data){
+        list($model, $cacheKey) = $this->cache->findCached($uuid, 'uuid', app()->make('tracker.config')->get('session_model'));
+        
+        $this->cache->cachePut($cacheKey, $data);
+    }
+
     private function getSystemSessionId()
     {
         $sessionData = $this->getSessionData();
@@ -283,11 +289,13 @@ class Session extends Repository
         return $this->getModel()->users($minutes, $results);
     }
 
-    public function getCurrent()
-    {
-        return $this->getModel();
+    public function getCurrent(){
+        return $this->newQuery()->find($this->getModel()['id']);
     }
 
+    public function fetchLatest(){
+        $session = $this->newQuery()->find($this->getModel()['id']);
+    }
     public function updateSessionData($data)
     {
         $session = $this->checkIfUserChanged($data, $this->find($this->getSessionData('id')));

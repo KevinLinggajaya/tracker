@@ -582,4 +582,19 @@ class Tracker
 
         return $success;
     }
+
+    /**
+     * Update the Status database.
+     *
+     * @return bool
+     */
+    public function updateStatus($session, $status)
+    {
+        $session = $this->dataRepositoryManager->sessionRepository->find($session['_id']);
+        $session->setAttribute('status', $status);
+        
+        $this->dataRepositoryManager->sessionRepository->updateSessionOnCacheByUuid($session['uuid'], $session);
+        
+        return $session;
+    }
 }
