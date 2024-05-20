@@ -592,6 +592,7 @@ class Tracker
     {
         $session = $this->dataRepositoryManager->sessionRepository->find($session['_id']);
         $session->setAttribute('status', $status);
+        $session->save();
         
         $this->dataRepositoryManager->sessionRepository->updateSessionOnCacheByUuid($session['uuid'], $session);
         
