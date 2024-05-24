@@ -69,7 +69,7 @@ class Session extends Repository
     {
         $data = $this->getSessionData();
 
-        if(!isset($data['status']) || $data['status'] == 0){
+        if(!isset($data['is_active']) || $data['is_active'] === false){
             return false;
         }
 
@@ -293,9 +293,6 @@ class Session extends Repository
         return $this->newQuery()->find($this->getModel()['id']);
     }
 
-    public function fetchLatest(){
-        $session = $this->newQuery()->find($this->getModel()['id']);
-    }
     public function updateSessionData($data)
     {
         $session = $this->checkIfUserChanged($data, $this->find($this->getSessionData('id')));

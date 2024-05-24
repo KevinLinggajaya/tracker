@@ -250,12 +250,12 @@ class Tracker
             'language_id'      => $this->getLanguageId(),
             'is_robot'         => $this->isRobot(),
             'impersonation_id' => null,
-            
+
             // The key user_agent is not present in the sessions table, but
             // it's internally used to check if the user agent changed
             // during a session.
             'user_agent'       => $this->dataRepositoryManager->getCurrentUserAgent(),
-            'status'       => 1,
+            'is_active'        => true,
         ];
 
         $authSessionPrefix = $this->config->get('auth_session_prefix');
@@ -444,8 +444,7 @@ class Tracker
 
     public function allowConsole()
     {
-        return
-            (!$this->laravel->runningInConsole()) ||
+        return (!$this->laravel->runningInConsole()) ||
             $this->config->get('console_log_enabled', false);
     }
 
@@ -584,18 +583,16 @@ class Tracker
     }
 
     /**
-     * Update the Status database.
-     *
-     * @return bool
+     * @return Session
      */
-    public function updateStatus($session, $status)
+    public function updateSessionStatus($session, bool $status)
     {
         $session = $this->dataRepositoryManager->sessionRepository->find($session['_id']);
-        $session->setAttribute('status', $status);
+        $session->setAttribute('is_active', $status);
         $session->save();
-        
+
         $this->dataRepositoryManager->sessionRepository->updateSessionOnCacheByUuid($session['uuid'], $session);
-        
+
         return $session;
     }
 }
