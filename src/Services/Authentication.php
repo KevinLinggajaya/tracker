@@ -40,6 +40,10 @@ class Authentication
                     $auth = $authIoc->guard($guard);
                 }
 
+                if (!isset($auth)) {
+                    $auth = $authIoc->guard();
+                }
+
                 if (is_callable([$auth, $method], true, $callable_name)) {
                     if ($data = $auth->$method()) {
                         return $data;
